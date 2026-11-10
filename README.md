@@ -1,65 +1,53 @@
-# Système de récupération et d’analyse des avis et alertes ANSSI
+# Analyse des avis et alertes ANSSI avec enrichissement des CVE
 
-## Présentation générale
-Ce projet a pour objectif d’automatiser la récupération et le traitement des avis et alertes publiés par l’ANSSI (CERT-FR). Le script lit les flux RSS officiels, télécharge les données associées, enrichit les CVE via les sources externes MITRE et FIRST, puis génère un fichier CSV consolidé. Des notifications par email peuvent ensuite être envoyées pour les vulnérabilités les plus critiques.
+Script Python qui récupère les avis et alertes de sécurité publiés par l'ANSSI (CERT-FR), extrait les CVE qu'ils mentionnent et les enrichit avec les données de MITRE et de FIRST, pour obtenir un tableau consolidé des vulnérabilités.
 
-Ce projet est conçu pour être exécuté simplement dans Spyder (Anaconda) sans configuration complexe.
+## Fonctionnement
 
-## Organisation du projet
+1. **Lecture des flux RSS du CERT-FR**
+   - avis : https://www.cert.ssi.gouv.fr/avis/feed/
+   - alertes : https://www.cert.ssi.gouv.fr/alerte/feed/
+2. **Récupération du JSON de chaque bulletin** pour en extraire l'identifiant ANSSI et la liste des CVE.
+3. **Enrichissement de chaque CVE**
+   - API CVE de MITRE (`cveawg.mitre.org`) pour la description, le score CVSS, la CWE, l'éditeur, le produit et les versions affectées
+   - API EPSS de FIRST (`api.first.org`) pour la probabilité d'exploitation
+4. **Consolidation** de toutes les lignes dans un DataFrame pandas, une ligne par couple bulletin / CVE.
 
-Les dossiers alertes, avis, mitre et first doivent se trouver dans le même dossier que projet.py.
+## Colonnes produites
 
-Le script détecte automatiquement son propre emplacement grâce à la variable BASE_DIR. Si le projet est organisé comme indiqué ci-dessus, il n’est pas nécessaire de modifier manuellement le répertoire de travail dans Spyder.
+| Colonne | Source |
+|---|---|
+| ID ANSSI, Titre ANSSI, Type, Date, Lien | Flux CERT-FR |
+| CVE | JSON du bulletin |
+| CVSS, CWE, Description, Éditeur, Produit, Versions affectées | MITRE |
+| EPSS | FIRST |
+| Base Severity | Prévue, pas encore renseignée |
 
-## Fonctionnement du script
+## Installation
 
-1. Lecture des fichiers locaux (alertes et avis)
-   Le programme parcourt les dossiers alertes et avis et extrait les informations essentielles : identifiant ANSSI, date, titre, CVE, description, systèmes affectés, etc.
+```bash
+pip install -r requirements.txt
+```
 
-2. Récupération des données ANSSI via RSS
-   Le script interroge automatiquement les flux suivants :
-   - https://www.cert.ssi.gouv.fr/avis/feed/
-   - https://www.cert.ssi.gouv.fr/alerte/feed/
-   Chaque entrée RSS est traitée pour récupérer les données JSON détaillées qui y sont associées.
+## Utilisation
 
-3. Enrichissement des CVE
-   Pour chaque CVE détectée, le script interroge :
-   - MITRE (description, CVSS, CWE, éditeur, produit)
-   - FIRST (score EPSS)
+```bash
+python script.py
+```
 
-4. Création du fichier CSV final
-   Toutes les données sont fusionnées et écrites dans le fichier donnees_consolidees_complet.csv. Les doublons sont éliminés et certaines colonnes sont nettoyées pour obtenir un fichier lisible et structuré.
+Le script est découpé en cellules (`#%%`), il peut aussi être exécuté pas à pas dans Spyder ou VS Code. À la fin, la variable `df` contient le tableau consolidé et ses premières lignes sont affichées.
 
-5. Envoi des alertes par email
-   Les vulnérabilités sont classées selon leur sévérité. Lorsque certaines dépassent un seuil élevé ou critique, un message email est généré et envoyé automatiquement.
+Le script interroge des API externes, une connexion internet est donc nécessaire, et l'exécution peut prendre quelques minutes selon le nombre de bulletins.
 
-## Utilisation sous Spyder (Anaconda)
+## Pistes d'amélioration
 
-1. Ouvrir Spyder
-2. Ouvrir script.py
-3. Vérifier que l’arborescence du projet est conforme à la structure indiquée
-4. Exécuter le script
+- Export du tableau en CSV
+- Calcul de la colonne Base Severity à partir du score CVSS
+- Alertes par email pour les vulnérabilités critiques
+- Exécution planifiée pour une veille continue
+- Tableau de bord de visualisation (éditeurs, produits, CVSS, EPSS)
+- Stockage dans une base SQL
 
-Lors de l’exécution :
-- le fichier CSV consolidé est généré ou mis à jour
-- des messages d’alerte peuvent être envoyés selon les résultats
+## Stack
 
-Aucune commande particulière n’est nécessaire ; tout se fait depuis l’environnement Spyder.
-
-## Points importants
-
-- Les dossiers alertes, avis, mitre et first doivent exister, même vides au départ.
-- Le script repose sur des appels API externes. Des erreurs peuvent survenir si les services MITRE ou FIRST sont indisponibles.
-- L’envoi d’emails dépend du bon paramétrage d’un compte Gmail et de l’accès au réseau.
-- Des pauses sont intégrées dans le script pour éviter de surcharger les API.
-
-## Améliorations futures possibles
-
-- Ajout d’un mode surveillance continue
-- Interface graphique ou web pour la visualisation des données
-- Passage à une base de données SQL
-- Téléchargement automatique des JSON MITRE et FIRST manquants
-- Mise en place d’un système de filtres avancés (éditeur, produit, CVSS, EPSS, CWE)
-
-## Licence
-Projet réalisé dans un cadre étudiant. Licence recommandée : MIT.
+Python · feedparser · requests · pandas
