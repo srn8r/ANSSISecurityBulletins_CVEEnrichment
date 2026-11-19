@@ -1,0 +1,16 @@
+{
+  "cveMetadata": {"cveId": "CVE-2026-2222", "state": "PUBLISHED"},
+  "containers": {
+    "cna": {
+      "descriptions": [{"lang": "en", "value": "Denial of service via crafted packet."}],
+      "affected": [{"vendor": "n/a", "product": "n/a", "versions": [{"version": "n/a", "status": "affected"}]}]
+    },
+    "adp": [
+      {
+        "providerMetadata": {"shortName": "CISA-ADP"},
+        "metrics": [{"cvssV3_1": {"baseScore": 5.3, "version": "3.1"}}],
+        "problemTypes": [{"descriptions": [{"cweId": "CWE-400", "lang": "en"}]}]
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>CERT-FR Avis</title>
+  <link>https://www.cert.ssi.gouv.fr/avis/</link>
+  <item>
+    <title>Multiples vulnérabilités dans OpenSSH</title>
+    <link>https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0101/</link>
+    <pubDate>Tue, 10 Nov 2026 14:00:00 +0000</pubDate>
+  </item>
+  <item>
+    <title>Bulletin sans CVE</title>
+    <link>https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0102/</link>
+    <pubDate>Wed, 11 Nov 2026 09:30:00 +0000</pubDate>
+  </item>
+</channel>
+</rss>

@@ -1,0 +1,24 @@
+{
+  "cveMetadata": {"cveId": "CVE-2026-1111", "state": "PUBLISHED"},
+  "containers": {
+    "cna": {
+      "descriptions": [
+        {"lang": "fr", "value": "Description en français"},
+        {"lang": "en", "value": "Remote code execution in OpenSSH server."}
+      ],
+      "metrics": [
+        {"format": "other", "other": {"type": "Textual description of severity"}},
+        {"cvssV3_1": {"baseScore": 9.8, "baseSeverity": "CRITICAL", "version": "3.1"}}
+      ],
+      "problemTypes": [{"descriptions": [{"cweId": "CWE-787", "description": "Out-of-bounds Write", "lang": "en"}]}],
+      "affected": [
+        {"vendor": "OpenBSD", "product": "OpenSSH", "versions": [
+          {"version": "9.6", "status": "affected"},
+          {"version": "9.7", "status": "affected"},
+          {"version": "9.8", "status": "unaffected"}
+        ]},
+        {"vendor": "OpenBSD", "product": "OpenSSH Portable", "versions": [{"version": "9.6p1", "status": "affected"}]}
+      ]
+    }
+  }
+}
