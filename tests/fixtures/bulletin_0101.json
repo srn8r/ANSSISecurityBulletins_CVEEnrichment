@@ -1,0 +1,10 @@
+{
+  "reference": "CERTFR-2026-AVI-0101",
+  "title": "Multiples vulnérabilités dans OpenSSH",
+  "cves": [
+    {"name": "CVE-2026-1111", "url": "https://www.cve.org/CVERecord?id=CVE-2026-1111"},
+    {"name": "CVE-2026-2222", "url": "https://www.cve.org/CVERecord?id=CVE-2026-2222"},
+    {"name": "CVE-2026-1111", "url": "https://www.cve.org/CVERecord?id=CVE-2026-1111"},
+    {"name": "not-a-cve"}
+  ]
+}
